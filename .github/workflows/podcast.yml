@@ -1,0 +1,81 @@
+name: Update Latest Podcast Episode
+
+on:
+  schedule:
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Fetch latest episode and update README
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+        run: |
+          python3 << 'EOF'
+          import requests, re, os
+
+          client_id = os.environ["SPOTIFY_CLIENT_ID"]
+          client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
+
+          token_res = requests.post(
+            "https://accounts.spotify.com/api/token",
+            data={"grant_type": "client_credentials"},
+            auth=(client_id, client_secret)
+          )
+          token = token_res.json()["access_token"]
+
+          ep_res = requests.get(
+            "https://api.spotify.com/v1/shows/033E11AlTP5udHIqs2RULD/episodes?limit=1&market=TR",
+            headers={"Authorization": f"Bearer {token}"}
+          )
+          ep = ep_res.json()["items"][0]
+          name = ep["name"]
+          url  = ep["external_urls"]["spotify"]
+          date = ep["release_date"]
+          desc = ep["description"][:140].rstrip() + "..."
+
+          block = f"""<!-- PODCAST:START -->
+          <p align="center">
+            <b>🎧 {name}</b><br/>
+            <i>📅 {date}</i><br/><br/>
+            <i>{desc}</i><br/><br/>
+            <a href="{url}" target="_blank">
+              <img height="34" src="https://img.shields.io/badge/Şimdi%20Dinle-1DB954?style=for-the-badge&logo=spotify&logoColor=white" />
+            </a>
+          </p>
+          <!-- PODCAST:END -->"""
+
+          with open("README.md", "r", encoding="utf-8") as f:
+              content = f.read()
+
+          new_content = re.sub(
+            r"<!-- PODCAST:START -->.*?<!-- PODCAST:END -->",
+            block, content, flags=re.DOTALL
+          )
+
+          with open("README.md", "w", encoding="utf-8") as f:
+              f.write(new_content)
+
+          print("README başarıyla güncellendi!")
+          EOF
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --staged --quiet || git commit -m "🎙️ Son podcast bölümü güncellendi"
+          git push
