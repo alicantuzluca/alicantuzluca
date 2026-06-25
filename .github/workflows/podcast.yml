@@ -5,6 +5,9 @@ on:
     - cron: "0 10 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   update-readme:
     runs-on: ubuntu-latest
@@ -12,9 +15,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: pip install requests
@@ -24,53 +27,78 @@ jobs:
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
         run: |
-          python3 << 'EOF'
-          import requests, re, os
+          python3 - <<'PYEOF'
+          import requests, re, os, sys
 
-          client_id = os.environ["SPOTIFY_CLIENT_ID"]
-          client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
+          client_id = os.environ.get("SPOTIFY_CLIENT_ID", "")
+          client_secret = os.environ.get("SPOTIFY_CLIENT_SECRET", "")
 
-          token_res = requests.post(
-            "https://accounts.spotify.com/api/token",
-            data={"grant_type": "client_credentials"},
-            auth=(client_id, client_secret)
+          if not client_id or not client_secret:
+              print("HATA: Spotify credentials bulunamadi!")
+              sys.exit(1)
+
+          # Token al
+          try:
+              token_res = requests.post(
+                  "https://accounts.spotify.com/api/token",
+                  data={"grant_type": "client_credentials"},
+                  auth=(client_id, client_secret),
+                  timeout=10
+              )
+              token_res.raise_for_status()
+              token = token_res.json()["access_token"]
+              print(f"Token alindi: {token[:20]}...")
+          except Exception as e:
+              print(f"HATA: Token alinamadi: {e}")
+              sys.exit(1)
+
+          # Son bolumu cek
+          try:
+              ep_res = requests.get(
+                  "https://api.spotify.com/v1/shows/033E11AlTP5udHIqs2RULD/episodes?limit=1&market=TR",
+                  headers={"Authorization": f"Bearer {token}"},
+                  timeout=10
+              )
+              ep_res.raise_for_status()
+              data = ep_res.json()
+              ep = data["items"][0]
+              name = ep["name"]
+              url  = ep["external_urls"]["spotify"]
+              date = ep["release_date"]
+              desc = ep["description"][:140].rstrip() + "..."
+              print(f"Bolum bulundu: {name}")
+          except Exception as e:
+              print(f"HATA: Bolum cekiLemedi: {e}")
+              sys.exit(1)
+
+          block = (
+              "<!-- PODCAST:START -->\n"
+              f'<p align="center">\n'
+              f"  <b>🎧 {name}</b><br/>\n"
+              f"  <i>📅 {date}</i><br/><br/>\n"
+              f"  <i>{desc}</i><br/><br/>\n"
+              f'  <a href="{url}" target="_blank">\n'
+              f'    <img height="34" src="https://img.shields.io/badge/%C5%9Eimdi%20Dinle-1DB954?style=for-the-badge&logo=spotify&logoColor=white" />\n'
+              f"  </a>\n"
+              f"</p>\n"
+              "<!-- PODCAST:END -->"
           )
-          token = token_res.json()["access_token"]
-
-          ep_res = requests.get(
-            "https://api.spotify.com/v1/shows/033E11AlTP5udHIqs2RULD/episodes?limit=1&market=TR",
-            headers={"Authorization": f"Bearer {token}"}
-          )
-          ep = ep_res.json()["items"][0]
-          name = ep["name"]
-          url  = ep["external_urls"]["spotify"]
-          date = ep["release_date"]
-          desc = ep["description"][:140].rstrip() + "..."
-
-          block = f"""<!-- PODCAST:START -->
-          <p align="center">
-            <b>🎧 {name}</b><br/>
-            <i>📅 {date}</i><br/><br/>
-            <i>{desc}</i><br/><br/>
-            <a href="{url}" target="_blank">
-              <img height="34" src="https://img.shields.io/badge/Şimdi%20Dinle-1DB954?style=for-the-badge&logo=spotify&logoColor=white" />
-            </a>
-          </p>
-          <!-- PODCAST:END -->"""
 
           with open("README.md", "r", encoding="utf-8") as f:
               content = f.read()
 
           new_content = re.sub(
-            r"<!-- PODCAST:START -->.*?<!-- PODCAST:END -->",
-            block, content, flags=re.DOTALL
+              r"<!-- PODCAST:START -->.*?<!-- PODCAST:END -->",
+              block,
+              content,
+              flags=re.DOTALL
           )
 
           with open("README.md", "w", encoding="utf-8") as f:
               f.write(new_content)
 
-          print("README başarıyla güncellendi!")
-          EOF
+          print("README basariyla guncellendi!")
+          PYEOF
 
       - name: Commit changes
         run: |
