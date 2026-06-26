@@ -62,6 +62,14 @@
 <h3 align="center">🎙️ Akşamüstü Düşünceleri — Son Bölüm</h3>
 
 <!-- PODCAST:START -->
+<p align="center">
+  <b>🎧 𝐁ü𝐲ü𝐲ü𝐧𝐜𝐞 𝐇𝐞𝐫 Ş𝐞𝐲 𝐃ü𝐳𝐞𝐥𝐢𝐫 𝐒𝐚𝐧ı𝐲𝐨𝐫𝐝𝐮𝐤</b><br/>
+  <i>📅 Wed, 24 Jun 2026</i><br/><br/>
+  <i><p>🌿 Bölüm Özeti | Büyüyünce Her Şey Düzelir Sanıyorduk</p><p>Çocukken büyümeyi hayal ederdik…<br />Her şeyin daha kolay olacağını, tüm sorunların bir...</i><br/><br/>
+  <a href="https://podcasters.spotify.com/pod/show/ali815/episodes/ep-e3l7rq4" target="_blank">
+    <img height="34" src="https://img.shields.io/badge/%C5%9Eimdi%20Dinle-1DB954?style=for-the-badge&logo=spotify&logoColor=white" />
+  </a>
+</p>
 <!-- PODCAST:END -->
 
 <p align="center">
