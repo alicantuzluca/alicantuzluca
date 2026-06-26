@@ -20,67 +20,50 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install feedparser
 
       - name: Fetch latest episode and update README
         env:
-          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
-          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          RSS_URL: ${{ secrets.PODCAST_RSS_URL }}
         run: |
           python3 - <<'PYEOF'
-          import requests, re, os, sys
+          import feedparser, re, os, sys
 
-          client_id = os.environ.get("SPOTIFY_CLIENT_ID", "")
-          client_secret = os.environ.get("SPOTIFY_CLIENT_SECRET", "")
+          rss_url = os.environ.get("RSS_URL", "").strip()
 
-          if not client_id or not client_secret:
-              print("HATA: Spotify credentials bulunamadi!")
+          if not rss_url:
+              print("HATA: PODCAST_RSS_URL secret bulunamadi!")
               sys.exit(1)
 
-          # Token al
-          try:
-              token_res = requests.post(
-                  "https://accounts.spotify.com/api/token",
-                  data={"grant_type": "client_credentials"},
-                  auth=(client_id, client_secret),
-                  timeout=10
-              )
-              token_res.raise_for_status()
-              token = token_res.json()["access_token"]
-              print(f"Token alindi: {token[:20]}...")
-          except Exception as e:
-              print(f"HATA: Token alinamadi: {e}")
+          print(f"RSS okunuyor: {rss_url}")
+          feed = feedparser.parse(rss_url)
+
+          if not feed.entries:
+              print("HATA: RSS feed bos veya erisemiyor!")
+              print(f"Feed status: {feed.get('status', 'bilinmiyor')}")
               sys.exit(1)
 
-          # Son bolumu cek
-          try:
-              ep_res = requests.get(
-                  "https://api.spotify.com/v1/shows/033E11AlTP5udHIqs2RULD/episodes?limit=1&market=TR",
-                  headers={"Authorization": f"Bearer {token}"},
-                  timeout=10
-              )
-              ep_res.raise_for_status()
-              data = ep_res.json()
-              ep = data["items"][0]
-              name = ep["name"]
-              url  = ep["external_urls"]["spotify"]
-              date = ep["release_date"]
-              desc = ep["description"][:140].rstrip() + "..."
-              print(f"Bolum bulundu: {name}")
-          except Exception as e:
-              print(f"HATA: Bolum cekiLemedi: {e}")
-              sys.exit(1)
+          ep   = feed.entries[0]
+          name = ep.get("title", "Yeni Bölüm")
+          url  = ep.get("link", "https://open.spotify.com/show/033E11AlTP5udHIqs2RULD")
+          raw_date = ep.get("published", "")
+          date = raw_date[:16] if raw_date else ""
+          summary = ep.get("summary", "")
+          desc = (summary[:150].rstrip() + "...") if summary else ""
+
+          print(f"Bolum: {name}")
+          print(f"Tarih: {date}")
 
           block = (
               "<!-- PODCAST:START -->\n"
-              f'<p align="center">\n'
+              '<p align="center">\n'
               f"  <b>🎧 {name}</b><br/>\n"
               f"  <i>📅 {date}</i><br/><br/>\n"
               f"  <i>{desc}</i><br/><br/>\n"
               f'  <a href="{url}" target="_blank">\n'
-              f'    <img height="34" src="https://img.shields.io/badge/%C5%9Eimdi%20Dinle-1DB954?style=for-the-badge&logo=spotify&logoColor=white" />\n'
-              f"  </a>\n"
-              f"</p>\n"
+              '    <img height="34" src="https://img.shields.io/badge/%C5%9Eimdi%20Dinle-1DB954?style=for-the-badge&logo=spotify&logoColor=white" />\n'
+              "  </a>\n"
+              "</p>\n"
               "<!-- PODCAST:END -->"
           )
 
