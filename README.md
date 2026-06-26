@@ -1,7 +1,7 @@
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:e96c19,50:e3342f,100:f5af19&height=280&section=header&text=Alican%20Tuzluca&fontSize=82&fontAlign=50&fontAlignY=42&fontColor=ffffff&desc=Dijital%20%C3%9Cretici%20%E2%80%A2%20Yaz%C4%B1l%C4%B1mc%C4%B1%20%E2%80%A2%20Podcast%C3%A7i&descAlign=50&descAlignY=62&descSize=20&descColor=ffe0c2&animation=fadeIn" />
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=600&size=22&duration=3000&pause=1200&color=FF6B35&center=true&vCenter=true&width=650&height=45&lines=Hayat%C4%B1+kolayla%C5%9Ft%C4%B1ran+projeler+yap%C4%B1yorum+%F0%9F%9B%A0%EF%B8%8F;Ak%C5%9Fam%C3%BCst%C3%BC+D%C3%BC%C5%9F%C3%BCnceleri+Podcast%27%C3%A7isiyim+%F0%9F%8E%99%EF%B8%8F;T%C3%BCrk%C3%A7e+%C3%96%C4%9Fretmenliği+%26+Bili%C5%9Fim+Mezunuyum+%F0%9F%8E%93;Yeni+i%C5%9F+birliklerine+her+zaman+a%C3%A7%C4%B1%C4%B1m+%F0%9F%A4%9D" alt="Typing" />
+  <img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=600&size=22&duration=3000&pause=1200&color=FF6B35&center=true&vCenter=true&width=650&height=45&lines=Hayat%C4%B1+kolayla%C5%9Ft%C4%B1ran+projeler+yap%C4%B1yorum+%F0%9F%9B%A0%EF%B8%8F;Ak%C5%9Fam%C3%BCst%C3%BC+D%C3%BC%C5%9F%C3%BCnceleri+Podcast%27%C3%A7isiyim+%F0%9F%8E%99%EF%B8%8F;T%C3%BCrk%C3%A7e+%C3%96%C4%9Fretmenli%C4%9Fi+%26+Bili%C5%9Fim+Mezunuyum+%F0%9F%8E%93;Yeni+i%C5%9F+birliklerine+her+zaman+a%C3%A7%C4%B1%C4%B1m+%F0%9F%A4%9D" alt="Typing" />
 </p>
 
 <img width="100%" src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" />
