@@ -1,4 +1,3 @@
-<img width="1408" height="2433" alt="me" src="https://github.com/user-attachments/assets/000398fb-6326-46a8-8ec8-aa0c1d07c5a9" />
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:e96c19,50:e3342f,100:f5af19&height=280&section=header&text=Alican%20Tuzluca&fontSize=82&fontAlign=50&fontAlignY=42&fontColor=ffffff&desc=Dijital%20%C3%9Cretici%20%E2%80%A2%20Yaz%C4%B1l%C4%B1mc%C4%B1%20%E2%80%A2%20Podcast%C3%A7i&descAlign=50&descAlignY=62&descSize=20&descColor=ffe0c2&animation=fadeIn" />
 
 <p align="center">
@@ -50,7 +49,7 @@
 </td>
 <td width="42%" valign="top" align="center">
 <br/>
-<img src="https://github.com/user-attachments/assets/88195c37-9110-4db0-ae32-1b1a1f12f3ff" width="240" alt="Alican Tuzluca" />
+<img src="https://github.com/user-attachments/assets/92a6d3a6-504e-4e45-b9bc-f9e0891520bf" width="240" alt="Alican Tuzluca" />
 
 </td>
 </tr>
@@ -85,4 +84,4 @@
   </picture>
 </p>
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:f5af19,50:e3342f,100:e96c19&height=120&section=footer" />
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:f5af19,50:e3342f,100:e96c19&height=120&section=footer" />  
