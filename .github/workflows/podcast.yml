@@ -1,3 +1,32 @@
+name: Update Latest Podcast Episode
+
+on:
+  schedule:
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install feedparser
+
+      - name: Fetch latest episode and update README
+        env:
+          RSS_URL: ${{ secrets.PODCAST_RSS_URL }}
+        run: |
+          python3 - <<'PYEOF'
           import feedparser, re, os, sys, html
           from datetime import datetime
 
@@ -6,33 +35,38 @@
               print("HATA: PODCAST_RSS_URL secret bulunamadi!")
               sys.exit(1)
 
+          print(f"RSS okunuyor: {rss_url}")
           feed = feedparser.parse(rss_url)
+
           if not feed.entries:
-              print("HATA: RSS feed bos!")
+              print("HATA: RSS feed bos veya erisemiyor!")
               sys.exit(1)
 
           ep   = feed.entries[0]
-          name = ep.get("title", "Yeni Bölüm")
+          name = ep.get("title", "Yeni Bolum")
           url  = ep.get("link", "https://open.spotify.com/show/033E11AlTP5udHIqs2RULD")
 
-          # Tarihi Türkçe formatına çevir
+          # Tarihi Turkce formatina cevir
           raw_date = ep.get("published", "")
           try:
               dt = datetime.strptime(raw_date[:16].strip(), "%a, %d %b %Y")
-              months = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran",
-                        "Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"]
+              months = ["Ocak","Subat","Mart","Nisan","Mayis","Haziran",
+                        "Temmuz","Agustos","Eylul","Ekim","Kasim","Aralik"]
               date = f"{dt.day} {months[dt.month-1]} {dt.year}"
           except:
               date = raw_date[:16]
 
-          # Sadece düz metni al, HTML taglerini ve başlık kısmını temizle
+          # HTML taglerini temizle, sade metin al
           raw_summary = ep.get("summary", "")
           clean = re.sub(r"<[^>]+>", "", raw_summary)
           clean = html.unescape(clean).strip()
-          # "Bölüm Özeti |..." gibi başlıkları atla, asıl paragrafı bul
           lines = [l.strip() for l in clean.splitlines() if l.strip()]
-          desc_lines = [l for l in lines if not l.startswith("Bölüm") and "|" not in l[:30]]
+          desc_lines = [l for l in lines if not l.startswith("Bolum") and "|" not in l[:30]]
           desc = " ".join(desc_lines)[:160].rstrip() + "..." if desc_lines else ""
+
+          print(f"Bolum: {name}")
+          print(f"Tarih: {date}")
+          print(f"Ozet: {desc}")
 
           block = (
               "<!-- PODCAST:START -->\n"
@@ -51,10 +85,24 @@
 
           with open("README.md", "r", encoding="utf-8") as f:
               content = f.read()
+
           new_content = re.sub(
               r"<!-- PODCAST:START -->.*?<!-- PODCAST:END -->",
-              block, content, flags=re.DOTALL
+              block,
+              content,
+              flags=re.DOTALL
           )
+
           with open("README.md", "w", encoding="utf-8") as f:
               f.write(new_content)
+
           print("README basariyla guncellendi!")
+          PYEOF
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --staged --quiet || git commit -m "🎙️ Son podcast bölümü güncellendi"
+          git push
