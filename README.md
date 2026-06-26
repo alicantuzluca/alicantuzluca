@@ -19,10 +19,6 @@
     <img height="34" src="https://img.shields.io/badge/Threads-000000?style=for-the-badge&logo=threads&logoColor=white" />
   </a>
   &nbsp;
-  <a href="https://open.spotify.com/show/033E11AlTP5udHIqs2RULD" target="_blank">
-    <img height="34" src="https://img.shields.io/badge/Spotify%20Podcast-1DB954?style=for-the-badge&logo=spotify&logoColor=white" />
-  </a>
-</p>
 
 <p align="center">
   <img src="https://komarev.com/ghpvc/?username=alicantuzluca&style=for-the-badge&color=e3342f&label=ZİYARETÇİ" />
