@@ -59,10 +59,10 @@
 
 <!-- PODCAST:START -->
 <p align="center">
-  <b>🎧 𝐓𝐞𝐥𝐞𝐟𝐨𝐧𝐮𝐧 𝐇𝐚𝐟ı𝐳𝐚𝐬ı : 𝐒𝐨𝐧 Ç𝐚ğ𝐫ı</b><br/>
+  <b>🎧 𝟒 - 𝐓𝐢𝐭𝐚𝐧𝐢𝐜’𝐢𝐧 𝐒𝐨𝐧 𝟐 𝐒𝐚𝐚𝐭𝐢</b><br/>
   <i>📅 20 Temmuz 2026</i><br/><br/>
-  <i>TELEFONUN HAFIZASITelefon sadece bir cihaz mı?Yoksa yıllardır cebinde taşıdığın en eski sır mı?Bu bölümde gerçek ile hayalin arasındaki çizgi kasıtlı olarak bul...</i><br/><br/>
-  <a href="https://podcasters.spotify.com/pod/show/ali815/episodes/ep-e3ma7ur" target="_blank"><img height="34" src="https://img.shields.io/badge/%C5%9Eimdi%20Dinle-1DB954?style=for-the-badge&logo=spotify&logoColor=white" /></a>&nbsp;<a href="https://open.spotify.com/show/033E11AlTP5udHIqs2RULD" target="_blank"><img height="34" src="https://img.shields.io/badge/T%C3%BCm%20B%C3%B6l%C3%BCmler-222222?style=for-the-badge&logo=spotify&logoColor=white" /></a>
+  <i></i><br/><br/>
+  <a href="https://podcasters.spotify.com/pod/show/ali815/episodes/--e3mablp" target="_blank"><img height="34" src="https://img.shields.io/badge/%C5%9Eimdi%20Dinle-1DB954?style=for-the-badge&logo=spotify&logoColor=white" /></a>&nbsp;<a href="https://open.spotify.com/show/033E11AlTP5udHIqs2RULD" target="_blank"><img height="34" src="https://img.shields.io/badge/T%C3%BCm%20B%C3%B6l%C3%BCmler-222222?style=for-the-badge&logo=spotify&logoColor=white" /></a>
 </p>
 <!-- PODCAST:END -->
 
